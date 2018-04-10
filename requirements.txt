@@ -1,0 +1,11 @@
+django==1.4.2
+django-tinymce
+djangocms-admin-style
+django-chartit
+django-dajax
+django-dajaxice
+south
+xlwt
+xlrd
+simplejson
+jsonrpclib

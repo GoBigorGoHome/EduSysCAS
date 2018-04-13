@@ -24,12 +24,13 @@ def login_redirect(request,identity):
     """
     #TODO: I will use reverse function to redirect, like school and expert
 
-    
+    # print "ENTERING LOGIN_DIRECT"
     loginfo(identity) #日志相关，与auth无关
     if check_auth(request.user,identity): # 只验证 user 和 identity 是否匹配？ 密码呢？
         loginfo(request.user)
         pass
     else:
+        # print "LOGIN FAILED!"
         try:
             del request.session['auth_role']
         except:
@@ -50,23 +51,6 @@ def logout_redirect(request):
         pass
     return HttpResponseRedirect('/')
 
-def homepage(request, template_name='registration/login.html',
-          redirect_field_name=REDIRECT_FIELD_NAME,
-        authentication_form=AuthenticationForm,
-        current_app=None, extra_context=None):
 
-    redirect_to = request.REQUEST.get(redirect_field_name, '')
-    form = authentication_form(request)
-    request.session.set_test_cookie()
-    current_site = get_current_site(request)
-    context = {
-        'form': form,
-        redirect_field_name: redirect_to,
-        'site': current_site,
-        'site_name': current_site.name,
-    }
-    if extra_context is not None:
-        context.update(extra_context)
-    return TemplateResponse(request, template_name, context, current_app=current_app)
 
     

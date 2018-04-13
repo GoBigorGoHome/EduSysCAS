@@ -22,9 +22,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         # 'NAME': 'Education_tempdb',             # Or path to database file if using sqlite3.
         #'NAME': 'EducationSystem',
-        'NAME': 'EducationSystemBak', # 那次误删之前的数据库备份
-        'USER': 'zjs',
-        'PASSWORD': 'zjs',
+        'NAME': 'EducationSystem', # 那次误删之前的数据库备份
+        'USER': 'root',
+        'PASSWORD': 'zjs@DUT',
         # 'USER': 'root',                       # Not used with sqlite3.
         # 'PASSWORD': 'root',                   # Not used with sqlite3.
         # 'HOST': '192.168.2.79',                           # Set to empty string for localhost. Not used with sqlite3.

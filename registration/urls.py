@@ -11,8 +11,8 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = patterns('', # ??
     url(
-        # r'^$', auth_views.login, {'template_name':'login.html'}
-        r'^$', registration_views.homepage, {'template_name':'login.html'}
+        r'^$', auth_views.login, {'template_name':'login.html'}
+        # r'^$', registration_views.homepage, {'template_name':'login.html'}
     ),
     url(
         r'^identityerror$',auth_views.login,{'template_name':'login.html','extra_context':{'identityerror':IDENTITYERROR}}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="fad2f83c-ab4e-4794-bc87-efca9b604085" name="banwagong" url="http://104.224.156.73">
+        <fileTransfer host="104.224.156.73" port="27408" rootFolder="/root" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="27408" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

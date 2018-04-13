@@ -49,7 +49,7 @@ def _login_url(service):
     params = {'service': service}
     if settings.CAS_EXTRA_LOGIN_PARAMS:
         params.update(settings.CAS_EXTRA_LOGIN_PARAMS)
-    print "CAS_SEVER_URL", settings.CAS_SERVER_URL
+    # print "CAS_SEVER_URL", settings.CAS_SERVER_URL
     return urljoin(settings.CAS_SERVER_URL, 'login') + '?' + urlencode(params)
 
 
@@ -66,31 +66,42 @@ def _logout_url(request, next_page=None):
 
 def login(request, next_page=None, required=False):
     """Forwards to CAS login URL or verifies CAS ticket"""
-    print "I am here!"
+    # print "I am here!"
     if not next_page:
+        # print "no_next_page"
         next_page = _redirect_url(request)
+        # print "now next page is", next_page
     if request.user.is_authenticated():
         message = "You are logged in as %s." % request.user.username
         messages.success(request, message)
         return HttpResponseRedirect(next_page)
     ticket = request.GET.get('ticket')
     service = _service_url(request, next_page)
+
+    # print request, next_page
+
     if ticket:
+        # print "I've got the ticket!"
         from django.contrib import auth
         user = auth.authenticate(ticket=ticket, service=service, request=request)
+        # if user is None:
+        #     print "But how to get the user?"
         if user is not None:
+            # print "and I've got the user!"
+            # print "but who is this f**king user?", user
             auth.login(request, user)
             name = user.first_name or user.username
             message = "Login succeeded. Welcome, %s." % name
             messages.success(request, message)
+            # print "what is the fucking next-page?", next_page
             return HttpResponseRedirect(next_page)
         elif settings.CAS_RETRY_LOGIN or required:
             return HttpResponseRedirect(_login_url(service))
         else:
-            error = "<h1>Forbidden</h1><p>Login failed.</p>"
+            error = "<h1>Forbidden</h1><p>Login failed. You do not have an account, contact the administrator for help. </p>"
             return HttpResponseForbidden(error)
     else:
-        print "I am here"
+        # print "I am here"
         return HttpResponseRedirect(_login_url(service))
 
 

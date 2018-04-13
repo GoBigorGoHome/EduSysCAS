@@ -7,6 +7,8 @@ from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.views import login, logout
 from django.core.urlresolvers import reverse
+from urlparse import urlparse, parse_qs
+import re
 
 from django_cas.views import login as cas_login, logout as cas_logout
 
@@ -29,9 +31,21 @@ class CASMiddleware(object):
         login URL, as well as calls to django.contrib.auth.views.login and
         logout.
         """
-
         if view_func == login:
-            return cas_login(request, *view_args, **view_kwargs)
+            # how to get the next query of the URL?
+            url = request.get_full_path()
+            qs = parse_qs(urlparse(url).query)
+            # print qs
+            # print "appended QUERY string:", request.GET.urlencode()
+            if REDIRECT_FIELD_NAME in qs:
+                # print qs
+                redirect = qs[REDIRECT_FIELD_NAME][0]
+                res = re.match(r"^/loginredirect/(?P<identity>\w+)/", redirect)
+                if res is not None and res.group('identity') == "student":
+                    return cas_login(request)
+
+            return login(request, *view_args, **view_kwargs)
+
         elif view_func == logout:
             return cas_logout(request, *view_args, **view_kwargs)
 
@@ -48,5 +62,6 @@ class CASMiddleware(object):
                 error = ('<h1>Forbidden</h1><p>You do not have staff '
                          'privileges.</p>')
                 return HttpResponseForbidden(error)
+
         params = urlencode({REDIRECT_FIELD_NAME: request.get_full_path()})
         return HttpResponseRedirect(reverse(cas_login) + '?' + params)

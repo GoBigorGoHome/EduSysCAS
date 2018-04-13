@@ -40,10 +40,6 @@ urlpatterns = patterns('',
 
     ),
     url(
-        r'^cas-login',
-        cas_login
-    ),
-    url(
         r'^adminStaff/',
         include('adminStaff.urls'),
         name="adminStaff"
